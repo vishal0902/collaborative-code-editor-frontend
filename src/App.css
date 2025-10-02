@@ -1,0 +1,13 @@
+.logo-container{
+  overflow: hidden;
+}
+.logo {
+  filter: drop-shadow(#6d1eaa 20px 20px 20px);
+  /* transform: translateY(-100px); */
+}
+
+.cm-editor {
+  font-family: monospace;
+  font-size: 14px;
+  min-height: 100vh;
+}
