@@ -7,7 +7,6 @@ import initSocket from '../socket';
 import ACTIONS from '../../Actions';
 import Test from '../components/Test';
 import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
 
 const Editor = () => {
   const [client, setClient] = useState([])
@@ -83,16 +82,13 @@ const Editor = () => {
       <div className='pointer-events-none absolute inset-0 backdrop-blur-[2px]' />
 
       <div className='grid grid-cols-12 h-screen'>
-        <motion.aside
-          initial={{ x: -24, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className='col-span-2 bg-[rgba(6,8,12,0.6)] backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between max-w-screen relative overflow-hidden'
+        <div
+          // initial={{ x: -24, opacity: 0 }}
+          // animate={{ x: 0, opacity: 1 }}
+          // transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className='col-span-2 bg-gradient-to-b from-slate-950 via-slate-700 to-slate-800 flex flex-col justify-between max-w-screen relative overflow-hidden'
         >
-          <div className='absolute -top-16 -left-16 h-48 w-48 rounded-full bg-cyan-500/20 blur-3xl' />
-          <div className='absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-sky-400/10 blur-3xl' />
-          <div className='pointer-events-none absolute inset-x-4 -top-10 h-20 bg-gradient-to-b from-white/20 to-transparent rounded-full blur-2xl' />
-          <div className='pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent' />
+            
 
           <div>
             <div className='logo-container m-4 pb-4 border-b border-white/10'>
@@ -109,27 +105,20 @@ const Editor = () => {
           </div>
 
           <div className='p-3'>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button cn='text-black bg-white/90 hover:bg-white rounded-lg shadow-md ring-1 ring-cyan-400/30' type="button" buttonName="Copy ROOM ID" onClick={handleCopyRoomId}/>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button cn='text-white bg-gradient-to-r from-slate-950 to-slate-800 hover:from-slate-900 hover:to-slate-700 rounded-lg shadow-md shadow-cyan-500/20 ring-1 ring-cyan-400/40' type="button" buttonName="Leave" onClick={()=>{
-                // socketRef.current.disconnect();
+              <Button cn='min-w-full text-black bg-white rounded-lg shadow-lg hover:bg-gray-200' type="button" buttonName="Copy Room ID" onClick={handleCopyRoomId}/>
+            
+              <Button cn='min-w-full text-white bg-gradient-to-r from-slate-950 to-slate-800 hover:from-slate-900 hover:to-slate-700 rounded-lg border-2 border-gray-600' type="button" buttonName="Leave" onClick={()=>{
                 navigate('/');
               }} />
-            </motion.div>
+          
           </div>
-        </motion.aside>
+        </div>
 
-        <motion.main
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className='col-span-10 bg-black/30 backdrop-blur-2xl relative'
+        <div
+          className='col-span-10'
         >
-          <div className='pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent' />
           <CodeEditor socketRef={socketRef} roomId={roomId} editorRef={editorRef} viewRef={viewRef} onCodeChange={code=>codeRef.current=code}/>
-        </motion.main>
+        </div>
         {/* <Test/> */}
       </div>
     </div>
