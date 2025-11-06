@@ -12,10 +12,12 @@
   "dependencies": {
     "@codemirror/commands": "^6.8.1",
     "@codemirror/lang-javascript": "^6.2.3",
+    "@codemirror/language": "^6.11.3",
     "@codemirror/state": "^6.5.2",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.36.5",
     "@tailwindcss/vite": "^4.1.2",
+    "axios": "^1.13.1",
     "codemirror": "^6.0.1",
     "express": "^5.1.0",
     "framer-motion": "^12.23.22",
@@ -27,7 +29,8 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.2",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

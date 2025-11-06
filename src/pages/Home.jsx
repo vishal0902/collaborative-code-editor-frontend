@@ -5,11 +5,38 @@ import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Home = () => {
   const navigate = useNavigate();
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
+  const [user, setUser] =  useState({})
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    axios.get(`http://localhost:4000/api/me`, { withCredentials: true, headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    } })
+      .then(res => {
+        if(res.status == 200){
+          console.log(res.data)
+          setUser(res.data.user); 
+          setUsername(res.data.user.name)
+        } else {
+          navigate('/signin');
+        }
+
+        })
+      .catch(err=>navigate('/signin'))
+      .finally(() => {
+        setLoading(false);
+        // console.log(user);
+      });
+  }, []);
+
 
   const generateUid = (e) => {
     e.preventDefault();
@@ -25,6 +52,7 @@ const Home = () => {
     navigate(`/editor/${roomId}`, {
       state: {
         username,
+        avatar: user.avatar
       },
     });
   };

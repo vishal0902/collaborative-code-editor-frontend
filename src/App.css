@@ -11,3 +11,22 @@
   font-size: 14px;
   min-height: 100vh;
 }
+
+select {
+  /* border-radius: 50px; */
+}
+
+option {
+  background-color: #314158;
+  color: whitesmoke;
+  font-family: monospace;
+  padding: 5px;
+  border-radius: 50px;
+}
+
+option:hover {
+  background-color: rgb(46, 47, 48);
+  color: white;
+  border-radius: 50px;
+
+}

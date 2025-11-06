@@ -1,5 +1,4 @@
-import React, { useRef, useEffect } from "react";
-
+import React, { useEffect } from "react";
 import { EditorState, Transaction } from "@codemirror/state";
 import { EditorView, keymap } from "@codemirror/view";
 import { defaultKeymap, indentWithTab } from "@codemirror/commands";
@@ -7,8 +6,9 @@ import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { basicSetup } from "codemirror";
 import ACTIONS from "../../Actions";
+import { useState } from "react";
 
-const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange }) => {
+const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange, userName, setClientCode }) => {
 
 
   useEffect(() => {
@@ -20,12 +20,15 @@ const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange }) => 
         );
         if (isRemote) return;
 
+
         socketRef.current.emit(ACTIONS.CODE_CHANGE, {
           roomId,
           code: update.state.doc.toString(),
         });
       }
     });
+
+ 
 
     const startState = EditorState.create({
       doc: `function hello() {\n  console.log("Hello, world!");\n}`,
@@ -35,6 +38,7 @@ const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange }) => 
         javascript(),
         oneDark,
         updateListener,
+      
       ],
     });
 
@@ -50,16 +54,21 @@ const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange }) => 
 
   useEffect(() => {
        if (socketRef.current) {
-      socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
-        console.log('code change recieved on client:  ', code)
-        editorRef.current.dispatch({
-          changes: {
-            from: 0,
-            to: editorRef.current.state.doc.length,
-            insert: code,
-          },
-          annotations: Transaction.userEvent.of("remote"),
-        });
+      socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code, username }) => {
+        if(userName !== username){
+          console.log('code change recieved on client:  ', code);
+          onCodeChange(code);
+          editorRef.current.dispatch({
+            changes: {
+              from: 0,
+              to: editorRef.current.state.doc.length,
+              insert: code,
+            },
+            annotations: Transaction.userEvent.of("remote"),
+          });
+        }
+        setClientCode(code);
+
         
       });
 
@@ -71,8 +80,11 @@ const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange }) => 
 
 
 
-  return (
-      <div ref={viewRef}></div>
+  return (<>
+      <div ref={viewRef}>
+      </div>
+
+  </>
   );
 };
 
