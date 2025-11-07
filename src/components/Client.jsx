@@ -2,7 +2,7 @@ import React from 'react'
 import Avatar from 'react-avatar'
 
 const Client = ({username, avatar}) => {
-  console.log(avatar);
+  // console.log(avatar);
   if(!avatar){
     return (
       <div className='flex flex-col items-center'>

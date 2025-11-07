@@ -30,3 +30,10 @@ option:hover {
   border-radius: 50px;
 
 }
+
+.remote-cursor {
+  position: relative;
+  border-left-width: 2px;
+  border-left-style: solid;
+  pointer-events: none;
+}

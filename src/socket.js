@@ -7,8 +7,10 @@ const initSocket = async () => {
         reconnectionAttempts: Infinity,
         timeout: 20000,
         transports: ['websocket'],
+        auth: {
+        token: localStorage.getItem('token') // send JWT from Auth.js
+    },
     }
-    // console.log(import.meta.env.VITE_BACKEND_URL)
     return io(import.meta.env.VITE_BACKEND_URL, options)
 }
 export default initSocket;

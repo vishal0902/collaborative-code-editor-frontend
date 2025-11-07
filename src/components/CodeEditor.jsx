@@ -6,7 +6,6 @@ import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { basicSetup } from "codemirror";
 import ACTIONS from "../../Actions";
-import { useState } from "react";
 
 const CodeEditor = ({ socketRef, editorRef, viewRef, roomId, onCodeChange, userName, setClientCode }) => {
 
