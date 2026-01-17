@@ -23,9 +23,10 @@ const SignIn = () => {
         email,
         password
       })
+      await response.data;
       // console.log(response.data);
       localStorage.setItem('token', response.data);
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       toast.error('Invalid credentials.')
       // console.log(error)

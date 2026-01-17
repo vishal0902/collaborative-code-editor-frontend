@@ -2,23 +2,34 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Client from "../components/Client";
 import Button from "../components/Button";
-import CodeEditor from "../components/CodeEditor";
-import initSocket from "../socket";
+// import CodeEditor from "../components/CodeEditor";
+import initSocket  from "../socket";
 import ACTIONS from "../../Actions";
-import Test from "../components/Test";
+// import Test from "../components/Test";
 import toast from "react-hot-toast";
 import { handleRunCode } from "../utils/runCodeSnippet";
-import { language } from "@codemirror/language";
+// import { language } from "@codemirror/language";
 import Spinner from "../components/spinner";
+import CodeCollabEditor from "../components/CodeCollabEditor";
+import * as Y from 'yjs'
+import { Awareness, encodeAwarenessUpdate, applyAwarenessUpdate } from 'y-protocols/awareness.js'
+import { EditorState } from "@codemirror/state";
+import { defaultKeymap } from "@codemirror/commands";
+import { indentWithTab } from "@codemirror/commands";
+import { keymap } from "@codemirror/view";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { basicSetup } from "codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+import { yCollab } from "y-codemirror.next";
+import { EditorView } from "@codemirror/view";
+import ClientSelf from "../components/CleintSelf";
 
-const Editor = () => {
+const EditorCollab = () => {
   const [client, setClient] = useState([]);
   const [loading, setLoading] = useState(false);
   const editorRef = useRef(null);
 
-  const viewRef = useRef(null);
   const socketRef = useRef();
-  const codeRef = useRef(null);
 
   const location = useLocation();
   const { username, avatar } = location.state;
@@ -34,33 +45,96 @@ const Editor = () => {
 
   const [codeLanguage, setCodeLanguage] = useState("javascript");
 
-  const init = async () => {
-    
-    try {
-      socketRef.current = await initSocket();
-    } catch (error) {
-      toast.error('Authorization error.')
-    }
 
-    socketRef.current.emit(ACTIONS.JOIN, {
+  
+  useEffect(()=>{
+    
+    socketRef.current = initSocket();
+    
+    const ydoc = new Y.Doc()
+
+    const yText = ydoc.getText("code")
+
+
+    /////////Cursor/////////
+    const awareness = new Awareness(ydoc)
+
+    awareness.setLocalStateField("user", {
+      name: username,
+      color: "#" + Math.floor(Math.random() * 16777215).toString(16)
+    })
+
+    /////////Cursor End/////////
+
+
+    socketRef.current.emit("join-room",{
       roomId,
       username,
-      avatar,
-    });
+      avatar
+    })
 
-    socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
+    ydoc.on("update", (update) => {
+      
+      setClientCode(yText.toString())
+      
+      if (origin !== "remote") {
+        socketRef.current.emit("yjs-update", {
+          roomId,
+          update: Array.from(update) // serialize safely
+      })
+    }
+    })
+
+    // Awareness sync
+    awareness.on("update", ({ added, updated, removed }) => {
+    const changedClients = added.concat(updated).concat(removed)
+
+    const awarenessUpdate = encodeAwarenessUpdate(
+      awareness,
+      changedClients
+    )
+
+    socketRef.current.emit("awareness-update", {
+      roomId,
+      update: Array.from(awarenessUpdate)
+    })
+    })
+
+    socketRef.current.on("awareness-update", update => {
+      applyAwarenessUpdate(
+        awareness,
+        new Uint8Array(update),
+        "remote"
+      )
+    })
+
+
+
+    // Awareness sync end
+
+    socketRef.current.on("yjs-sync", state => {
+      Y.applyUpdate(ydoc, new Uint8Array(state), "remote")
+    })
+
+
+    socketRef.current.on("yjs-update", update => {
+      Y.applyUpdate(ydoc, new Uint8Array(update), "remote")
+    })
+
+
+    socketRef.current.on("save-soketId", ({userSocketId})=> {
+      localStorage.setItem('mySocketId', userSocketId )
+    })
+
+    socketRef.current.on(ACTIONS.JOINED, ({ clients, username }) => {
+      console.log(username, clients, location.state.username);
+      
       if (location.state.username !== username) {
         toast.success(`${username} joined the room.`);
-      }
+      } 
+      
       setClient(clients);
-      console.log(clients.length);
-      if (clients.length > 1) {
-        codeRef.current = editorRef.current.state.doc.toString();
-      }
-      socketRef.current.emit(ACTIONS.SYNC_CODE, {
-        code: codeRef.current,
-        socketId,
-      });
+    
     });
 
     socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
@@ -70,12 +144,7 @@ const Editor = () => {
       );
     });
 
-    socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
-      toast.success(`${username} has left the room.`);
-      setClient((prev) =>
-        prev.filter((client) => client.socketId !== socketId)
-      );
-    });
+   
 
     socketRef.current.on(
       ACTIONS.CODE_RUNNING,
@@ -109,16 +178,39 @@ const Editor = () => {
       }
     );
 
-    // socketRef.current.off(ACTIONS.DISCONNECTED)
-  };
+     //Codemirror  
 
-  useEffect(() => {
-    init();
+     const state = EditorState.create({
+        doc: yText.toString(),
+        extensions: [
+          basicSetup,
+          oneDark,
+          keymap.of([defaultKeymap,indentWithTab]),
+          javascript(),
+          yCollab(yText, awareness)
+          ]
+      })
 
-    return () => {
-      socketRef.current.disconnect();
-    };
-  }, []);
+    const view = new EditorView({
+      state,
+      parent: editorRef.current
+    })
+
+    return ()=>{
+      socketRef.current.disconnect()
+      socketRef.current.off("yjs-update")
+      socketRef.current.off("yjs-sync")
+      socketRef.current.off("awareness-update")
+      view.destroy();
+      ydoc.destroy();
+    }
+
+  },[roomId])
+  
+  
+  // useEffect(() => {
+    
+  // }, [roomId]);
 
   const handleCopyRoomId = () => {
     navigator.clipboard
@@ -149,8 +241,10 @@ const Editor = () => {
                 Connected{" "}
               </p>
               <div className="flex flex-row flex-wrap gap-2 p-2">
-                {client?.map((client) => (
+                <ClientSelf username={location.state.username} avatar={location.state.avatar} />
+                {client?.filter(c => c.socketId !== localStorage.getItem("mySocketId")).map((client) => (
                   <Client
+                    localUser={location.state.username}
                     key={client.socketId}
                     username={client.username}
                     avatar={client.avatar}
@@ -172,7 +266,8 @@ const Editor = () => {
                 type="button"
                 buttonName="Leave"
                 onClick={() => {
-                  navigate("/");
+                  localStorage.removeItem("mySocketId");
+                  navigate("/home",{replace: true});
                 }}
               />
             </div>
@@ -232,23 +327,16 @@ const Editor = () => {
                 </div>
               </div>
             </div>
-            <CodeEditor
-              setClientCode={setClientCode}
-              userName={location.state.username}
-              socketRef={socketRef}
-              roomId={roomId}
-              editorRef={editorRef}
-              viewRef={viewRef}
-              onCodeChange={(code) => (codeRef.current = code)}
-            />
+            <div ref={editorRef} style={{height:'100vh', width:'100vw' }}></div>
 
+            
             {showOutputSection && (
               <div className="absolute w-full bottom-0 bg-slate-800 text-white font-mono max-h-[20vh] min-h-[20vh] border-t-2 border-green-400/80">
                 <div className=" m-2 ">
                   {codeRunStatus && (
                     <div>
                       <div className=" text-white/50 w-full ">
-                        {output?.stderr || output?.stdout ? (
+                        {output?.stderr ? (
                           <span className="border-b">Problem</span>
                         ) : (
                           <span className="border-b">Output</span>
@@ -263,8 +351,8 @@ const Editor = () => {
                               ? output.stderr
                               : output.stdout
                                   .split("\n")
-                                  .map((str) => (
-                                    <div className="m-0! ">{str}</div>
+                                  .map((str, index) => (
+                                    <div key={index} className="m-0! ">{str}</div>
                                   ))}
                           </div>
                         )}
@@ -293,4 +381,4 @@ const Editor = () => {
     );
 };
 
-export default Editor;
+export default EditorCollab;

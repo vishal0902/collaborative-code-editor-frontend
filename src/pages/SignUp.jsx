@@ -63,7 +63,7 @@ const SignUp = () => {
             })
             console.log(response.data)
             localStorage.setItem('token', response.data)
-            navigate('/')
+            navigate('/home')
         } catch (error) {
           console.log(error)
         } 

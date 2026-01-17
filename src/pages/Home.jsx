@@ -13,10 +13,12 @@ const Home = () => {
   const [roomId, setRoomId] = useState("");
   const [username, setUsername] = useState("");
   const [user, setUser] =  useState({})
-  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
+    // console.log(localStorage.getItem('token'))
+    if(localStorage.getItem('token')=== null) {navigate('/signin'); return;}
+    
     axios.get(`http://localhost:4000/api/me`, { withCredentials: true, headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     } })
@@ -26,14 +28,12 @@ const Home = () => {
           setUser(res.data.user); 
           setUsername(res.data.user.name)
         } else {
-          navigate('/signin');
+          navigate('/');
         }
 
         })
-      .catch(err=>navigate('/signin'))
+      .catch(err=>navigate('/'))
       .finally(() => {
-        setLoading(false);
-        // console.log(user);
       });
   }, []);
 
@@ -69,6 +69,20 @@ const Home = () => {
       <div className="pointer-events-none absolute inset-0 backdrop-blur-[2px]" />
 
       <div className="flex items-center justify-center min-h-screen px-4">
+      <Button
+          cn="absolute top-6 left-6 text-white bg-gradient-to-r from-slate-950 to-slate-800 hover:from-slate-900 hover:to-slate-700 rounded-lg shadow-lg shadow-cyan-500/20 ring-1 ring-cyan-400/40"
+          type="button"
+          buttonName="Logout"
+          onClick={() => {
+            axios.post(`http://localhost:4000/auth/logout`, { }, { withCredentials: true }).then(res => {
+              if(res.status === 204){
+                toast.success("Logged out successfully.");
+              }
+            })
+            localStorage.removeItem('token');
+            navigate('/')
+            }}
+        />
         <motion.div
           initial={{ opacity: 0, y: 24, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

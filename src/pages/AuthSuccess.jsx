@@ -10,7 +10,7 @@ export default function GitHubAuthSuccess() {
     if (token) {
       localStorage.setItem("token", token);
       console.log(token);
-      navigate("/"); // Redirect to logged-in page
+      navigate("/home"); // Redirect to logged-in page
     } else {
       navigate("/login");
     }
