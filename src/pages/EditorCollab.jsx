@@ -127,7 +127,7 @@ const EditorCollab = () => {
     })
 
     socketRef.current.on(ACTIONS.JOINED, ({ clients, username }) => {
-      console.log(username, clients, location.state.username);
+      // console.log(username, clients, location.state.username);
       
       if (location.state.username !== username) {
         toast.success(`${username} joined the room.`);
