@@ -104,6 +104,7 @@ const Home = () => {
                   width={120}
                   height={100}
                   src="/wecode_logo.webp"
+                  loading="lazy"
                   alt="logo-we.code"
                   className="mb-4 drop-shadow-xl"
                 />

@@ -234,6 +234,7 @@ const EditorCollab = () => {
                   width={120}
                   height={100}
                   src="/wecode_logo.webp"
+                  loading="lazy"
                   alt="logo-we.code"
                   className="mb-4 drop-shadow-xl drop-shadow-gray-100"
                 />
@@ -244,6 +245,7 @@ const EditorCollab = () => {
                   width={36}
                   height={10}
                   src="/wecode_logo.webp"
+                  loading="lazy"
                   alt="logo-we.code"
                   className="drop-shadow-xl drop-shadow-gray-100"
                 />
