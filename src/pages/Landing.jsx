@@ -42,7 +42,7 @@ const Landing = () => {
         
             <div className="flex">
                 <img
-                    src="/wc_logo.png"
+                    src="/wc_logo.webp"
                     alt="we.code"
                     className="w-30 h-14 drop-shadow-xl drop-shadow-gray-100 mr-4"
                 />

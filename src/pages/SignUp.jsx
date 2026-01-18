@@ -95,7 +95,7 @@ const SignUp = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[radial-gradient(1200px_600px_at_0%_0%,rgba(2,6,23,0.6),transparent_60%),radial-gradient(1200px_600px_at_100%_100%,rgba(8,47,73,0.35),transparent_60%)]">
       <div className="w-full max-w-md bg-white/10 rounded-2xl shadow-xl border border-white/15 p-8 backdrop-blur-lg">
-      <img width={120} height={100} src='/wecode_logo.png' alt='logo-we.code' className='fill-indigo-500 drop-shadow-lg drop-shadow-slate-200/90 mb-4 justify-self-center' />
+      <img width={120} height={100} src='/wecode_logo.webp' alt='logo-we.code' className='fill-indigo-500 drop-shadow-lg drop-shadow-slate-200/90 mb-4 justify-self-center' />
         <h2 className="text-xl font-semibold text-white/90 text mb-4 mt-6 justify-self-center">Create a new account</h2>
         <form onSubmit={handleSignUp}>
           <Input

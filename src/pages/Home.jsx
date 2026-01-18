@@ -103,7 +103,7 @@ const Home = () => {
                   transition={{ delay: 0.1, duration: 0.4 }}
                   width={120}
                   height={100}
-                  src="/wecode_logo.png"
+                  src="/wecode_logo.webp"
                   alt="logo-we.code"
                   className="mb-4 drop-shadow-xl"
                 />
