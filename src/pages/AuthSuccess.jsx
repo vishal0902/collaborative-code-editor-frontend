@@ -9,7 +9,7 @@ export default function GitHubAuthSuccess() {
     useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
-      console.log(token);
+      // console.log(token);
       navigate("/home"); // Redirect to logged-in page
     } else {
       navigate("/login");

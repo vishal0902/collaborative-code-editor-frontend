@@ -13,12 +13,14 @@ const SignIn = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
 
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}api/auth/user/login`,{
         email,
         password
@@ -26,6 +28,7 @@ const SignIn = () => {
       await response.data;
       // console.log(response.data);
       localStorage.setItem('token', response.data);
+      setLoading(false);
       navigate('/home');
     } catch (error) {
       toast.error('Invalid credentials.')
@@ -65,6 +68,7 @@ const SignIn = () => {
             cn="p-3 outline-none rounded-lg bg-white/20 text-white/90 placeholder-white/60 w-full tracking-widest font-normal border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           <Button 
+            loading={loading}
             type="submit"
             buttonName="Sign In"
             cn="w-full text-white bg-gradient-to-r from-slate-950 to-slate-800 hover:from-slate-900 hover:to-slate-700 rounded-lg shadow-lg shadow-cyan-900/30 mt-4"

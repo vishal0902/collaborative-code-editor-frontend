@@ -22,6 +22,7 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [errorMsg, setErroMsg] = useState({
     nameError : "",
     emailError: "",
@@ -56,13 +57,15 @@ const SignUp = () => {
 
     } else{
           try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/user/register`,{
+            setLoading(true);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}api/auth/user/register`,{
               name,
               email,
               password
             })
             console.log(response.data)
             localStorage.setItem('token', response.data)
+            setLoading(false);
             navigate('/home')
         } catch (error) {
           console.log(error)
@@ -100,7 +103,7 @@ const SignUp = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="Email"
-            cn="px-2 py-2 outline-none rounded-lg bg-gray-800/20 text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-800/90 focus:ring-2 focus:ring-cyan-400/30 transition"
+            cn="tracking-widest font-normal px-2 py-2 outline-none rounded-lg bg-gray-800/20 text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-800/90 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           {errorMsg.emailError && <ErrorMessage errorMessage={errorMsg.emailError}/>}
 
@@ -109,7 +112,7 @@ const SignUp = () => {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Full Name"
-            cn="px-2 py-2 outline-none rounded-lg bg-gray-800/20  text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-800/90 focus:ring-2 focus:ring-cyan-400/30 transition"
+            cn="tracking-widest font-normal px-2 py-2 outline-none rounded-lg bg-gray-800/20  text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-800/90 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           {errorMsg.nameError && <ErrorMessage errorMessage={errorMsg.nameError}/>}
 
@@ -119,7 +122,7 @@ const SignUp = () => {
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="Password"
-            cn="px-2 py-2 outline-none rounded-lg bg-gray-800/20  text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-900/90 focus:ring-2 focus:ring-cyan-400/30 transition"
+            cn="tracking-widest font-normal px-2 py-2 outline-none rounded-lg bg-gray-800/20  text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-900/90 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           {errorMsg.passwordError && <ErrorMessage errorMessage={errorMsg.passwordError}/>}
 
@@ -128,11 +131,12 @@ const SignUp = () => {
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
             placeholder="Confirm Password"
-            cn="px-2 py-2 outline-none rounded-lg bg-gray-800/20  text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
+            cn="tracking-widest font-normal px-2 py-2 outline-none rounded-lg bg-gray-800/20  text-white/90 placeholder-white/60 min-w-full border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           {errorMsg.confirmPasswordError && <ErrorMessage errorMessage={errorMsg.confirmPasswordError}/>}
 
           <Button 
+            loading={loading}
             type="submit"
             buttonName="Sign Up"
             cn="w-full text-white bg-gradient-to-r from-slate-950 to-slate-800 hover:from-slate-900 hover:to-slate-700 rounded-lg shadow-lg shadow-cyan-900/30 mt-4"

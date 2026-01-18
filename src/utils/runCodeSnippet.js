@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const handleRunCode = async (code, codeLanguage) => {
     // const [output, setOutput] = useState('');
-    console.log(codeLanguage);
+    // console.log(codeLanguage);
     try {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}api/code/run`, {
         language: codeLanguage,

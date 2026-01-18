@@ -225,23 +225,52 @@ const EditorCollab = () => {
       <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(1200px_600px_at_0%_0%,rgba(2,6,23,0.6),transparent_60%),radial-gradient(1200px_600px_at_100%_100%,rgba(8,47,73,0.35),transparent_60%)]">
         <div className="pointer-events-none absolute inset-0 backdrop-blur-[2px]" />
 
-        <div className="grid grid-cols-12 h-screen">
+        <div className="lg:grid lg:grid-cols-12 h-screen">
           {/* Aside section start */}
-          <div className="col-span-2 bg-gradient-to-b from-slate-950 via-slate-700 to-slate-800 flex flex-col justify-between max-w-screen relative overflow-hidden">
+          <div className="lg:h-screen h-[26vh] lg:col-span-2 bg-gradient-to-b from-slate-950 via-slate-700 to-slate-800 flex flex-col justify-between max-w-screen relative overflow-hidden">
             <div>
-              <div className="logo-container m-4 pb-4 border-b border-white/10">
+              <div className="logo-container m-4 pb-4 border-b border-white/10 lg:flex hidden">
                 <img
                   width={120}
                   height={100}
                   src="/wecode_logo.png"
                   alt="logo-we.code"
-                  className="mb-4 drop-shadow-xl"
+                  className="mb-4 drop-shadow-xl drop-shadow-gray-100"
                 />
               </div>
-              <p className="m-2 text-base font-semibold text-white/80">
-                Connected{" "}
-              </p>
-              <div className="flex flex-row flex-wrap gap-2 p-2">
+              <div>
+                <div className="mt-4 ml-2 justify-between lg:hidden flex ">
+                  <img
+                  width={36}
+                  height={10}
+                  src="/wecode_logo.png"
+                  alt="logo-we.code"
+                  className="drop-shadow-xl drop-shadow-gray-100"
+                />
+                  <div className="flex space-x-2 mx-2">
+                  <span
+                    className="text-black text-xs bg-white rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer"
+                    type="button"
+                    onClick={handleCopyRoomId}
+                  >Copy Room ID</span>
+
+                  <span
+                    className="text-white text-xs bg-gray-700 rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer "
+                    type="button"
+                    onClick={() => {
+                      localStorage.removeItem("mySocketId");
+                      navigate("/home",{replace: true});
+                    }}
+                  >Leave</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-5 justify-between">
+                <p className="m-2 text-md font-semibold tracking-wider text-white/80">
+                Collaborators{" "}
+                </p>
+              </div>
+              <div className="flex flex-row lg:flex-wrap gap-2 lg:p-2 overflow-hidden mb-2">
                 <ClientSelf username={location.state.username} avatar={location.state.avatar} />
                 {client?.filter(c => c.socketId !== localStorage.getItem("mySocketId")).map((client) => (
                   <Client
@@ -254,7 +283,7 @@ const EditorCollab = () => {
               </div>
             </div>
 
-            <div className="p-3">
+            <div className="p-3 lg:flex lg:flex-col hidden">
               <Button
                 cn="min-w-full text-black bg-white rounded-lg shadow-lg hover:bg-gray-200"
                 type="button"
@@ -276,9 +305,9 @@ const EditorCollab = () => {
 
           {/* Aside section end */}
 
-          <div className="relative max-h-screen col-span-10 bg-gray-100/10">
-            <div className="w-full relative bg-gray-900/10 flex justify-between pt-1">
-              <select
+          <div className="max-h-screen lg:col-span-10 bg-gray-100/10">
+            <div className="w-full relative bg-gray-900/10 lg:flex flex-row justify-between pt-1">
+              <div className="relative"><select
                 value={codeLanguage}
                 onChange={(e) => {
                   socketRef.current.emit(ACTIONS.CHANGE_LANGUAGE, {
@@ -294,13 +323,14 @@ const EditorCollab = () => {
                 <option value="python">Python</option>
                 <option value="cpp">C++</option>
               </select>
-              <span className="absolute text-xs/tight left-30 top-3/10 text-gray-400">
+              <span className="absolute text-xs/tight left-30 top-3/14 text-gray-400">
                 ▼
               </span>{" "}
-                <div className="mt-1.5 flex gap-5">
-                  <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90">Language Mode : </span> 
+              </div>
+                <div className="mt-1.5 flex gap-2">
+                  <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90 mx-2">Language Mode : </span> 
                   <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90">{codeLanguage} </span> 
-                    <span className=""><motion.div
+                    <span className="ml-3 lg:ml-2"><motion.div
                         animate={{ y: [0, -5, 0] }}
                         transition={{ duration: 3, repeat: Infinity }}
                         className="relative px-3 py-2 bg-green-500/20 border border-green-500/50 rounded-full text-xs text-green-300"
@@ -309,7 +339,7 @@ const EditorCollab = () => {
                     </motion.div></span>
                 </div>
               <div>
-                <div className="">
+                <div className="flex justify-center">
                   <button
                     onClick={async () => {
                       // setShowOutputSection(true);
@@ -331,7 +361,7 @@ const EditorCollab = () => {
                         });
                       });
                     }}
-                    className="m-1 bg-green-500/90 hover:opacity-50 text-sm text-white min-w-[6vw] py-[2px]! rounded-sm!"
+                    className="m-1 bg-green-500/90 hover:opacity-50 text-sm text-white lg:min-w-[6vw] min-w-[96vw]   py-[2px]! rounded-sm! "
                   >
                     Run
                   </button>

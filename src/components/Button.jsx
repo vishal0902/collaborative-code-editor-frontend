@@ -1,4 +1,5 @@
 import React from 'react'
+import { Spinner } from './Spinner'
 
 const Button = (props) => {
   return (
@@ -8,7 +9,7 @@ const Button = (props) => {
           className={props.cn} 
           type= {props.type} 
           >
-            {props.buttonName}
+            {props.loading ? <span className='flex justify-center'><Spinner /> </span>: props.buttonName}
           </button>
     </div>
   )

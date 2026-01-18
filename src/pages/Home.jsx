@@ -24,7 +24,7 @@ const Home = () => {
     } })
       .then(res => {
         if(res.status == 200){
-          console.log(res.data)
+          // console.log(res.data)
           setUser(res.data.user); 
           setUsername(res.data.user.name)
         } else {
@@ -128,7 +128,7 @@ const Home = () => {
                   onKeyUp={handleEnterPressed}
                   type="text"
                   placeholder="Room ID"
-                  cn="p-3 outline-none rounded-lg bg-white/10 text-white/90 placeholder-white/50 w-full font-medium border border-white/10 shadow-inner shadow-black/30 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30 transition"
+                  cn="tracking-widest font-normal p-3 outline-none rounded-lg bg-white/10 text-white/90 placeholder-white/50 w-full font-medium border border-white/10 shadow-inner shadow-black/30 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30 transition"
                 />
                 <Input
                   value={username}
@@ -136,7 +136,7 @@ const Home = () => {
                   onKeyUp={handleEnterPressed}
                   type="text"
                   placeholder="Username"
-                  cn="p-3 outline-none rounded-lg bg-white/10 text-white/90 placeholder-white/50 w-full font-medium border border-white/10 shadow-inner shadow-black/30 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30 transition"
+                  cn="tracking-widest font-normal p-3 outline-none rounded-lg bg-white/10 text-white/90 placeholder-white/50 w-full font-medium border border-white/10 shadow-inner shadow-black/30 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30 transition"
                 />
               </motion.div>
 
@@ -161,7 +161,7 @@ const Home = () => {
                   <a
                     href=""
                     onClick={generateUid}
-                    className="text-base text-cyan-300 no-underline cursor-pointer hover:text-cyan-200"
+                    className="lg:text-base text-xs  text-cyan-300 no-underline cursor-pointer hover:text-cyan-200"
                   >
                     new room
                   </a>

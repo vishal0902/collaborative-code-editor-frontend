@@ -37,36 +37,38 @@ const Landing = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="relative z-50 flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/10 backdrop-blur-sm"
+        className="relative z-50 flex items-center justify-between px-2 lg:px-8 py-6 border-b border-white/10 backdrop-blur-sm"
       >
-        <div className="flex items-center gap-5">
-          <img
-            src="/wc_logo.png"
-            alt="we.code"
-            className="w-30 h-15 drop-shadow-xl drop-shadow-gray-100"
-          />
-          <span className="text-4xl font-bold bg-gradient-to-r from-green-300 via-green-400 to-sky-400 bg-clip-text text-transparent">
-            we.code
-          </span>
-        </div>
-        <div className="flex items-center gap-4">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/signin")}
-            className="px-6 py-2 text-white/80 hover:text-white transition-colors"
-          >
-            Sign In
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate("/signup")}
-            className="px-6 py-2 text-white bg-gradient-to-r from-green-700 to-green-600 hover:from-green-500 hover:to-green-400 rounded-lg shadow-lg shadow-green-500/20 ring-1 ring-green-400/40"
-          >
-            Get Started
-          </motion.button>
-        </div>
+        
+            <div className="flex">
+                <img
+                    src="/wc_logo.png"
+                    alt="we.code"
+                    className="w-30 h-14 drop-shadow-xl drop-shadow-gray-100 mr-4"
+                />
+                <span className="lg:flex hidden text-4xl font-bold bg-gradient-to-r from-green-300 via-green-400 to-sky-400 bg-clip-text text-transparent">
+                    we.code
+                </span>
+            </div>
+            <div className="flex items-center gap-4">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate("/signin")}
+                    className="px-6 py-2 text-white/80 hover:text-white transition-colors"
+                >
+                    Sign In
+                </motion.button>
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate("/signup")}
+                    className="px-6 py-2 text-white bg-gradient-to-r from-green-700 to-green-600 hover:from-green-500 hover:to-green-400 rounded-lg shadow-lg shadow-green-500/20 ring-1 ring-green-400/40"
+                >
+                    Get Started
+                </motion.button>
+            </div>
+        
       </motion.nav>
 
       <motion.div
