@@ -7,6 +7,7 @@ import initSocket  from "../socket";
 import ACTIONS from "../../Actions";
 // import Test from "../components/Test";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 import { handleRunCode } from "../utils/runCodeSnippet";
 // import { language } from "@codemirror/language";
 import Spinner from "../components/spinner";
@@ -296,7 +297,17 @@ const EditorCollab = () => {
               <span className="absolute text-xs/tight left-30 top-3/10 text-gray-400">
                 ▼
               </span>{" "}
-              <div className="mt-1.5"><span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90">Language Mode : </span> <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90">{codeLanguage} </span> </div>
+                <div className="mt-1.5 flex gap-5">
+                  <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90">Language Mode : </span> 
+                  <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90">{codeLanguage} </span> 
+                    <span className=""><motion.div
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 3, repeat: Infinity }}
+                        className="relative px-3 py-2 bg-green-500/20 border border-green-500/50 rounded-full text-xs text-green-300"
+                      >
+                        ● Live: {client.length} {client.length === 1 ? <span>collaborator</span> : <span>collaborators</span>} 
+                    </motion.div></span>
+                </div>
               <div>
                 <div className="">
                   <button

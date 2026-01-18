@@ -19,7 +19,7 @@ const SignIn = () => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-       const response = await axios.post('http://localhost:4000/api/auth/user/login',{
+       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}api/auth/user/login`,{
         email,
         password
       })
@@ -55,14 +55,14 @@ const SignIn = () => {
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="Email"
-            cn="p-3 outline-none rounded-lg bg-white/20 text-white/90 placeholder-white/60 w-full font-medium border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
+            cn="p-3 outline-none rounded-lg bg-white/20 tracking-widest text-white/90 placeholder-white/60 w-full font-normal border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           <Input
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             placeholder="Password"
-            cn="p-3 outline-none rounded-lg bg-white/20 text-white/90 placeholder-white/60 w-full font-medium border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
+            cn="p-3 outline-none rounded-lg bg-white/20 text-white/90 placeholder-white/60 w-full tracking-widest font-normal border border-white/10 focus:border-cyan-900/60 focus:ring-2 focus:ring-cyan-400/30 transition"
           />
           <Button 
             type="submit"

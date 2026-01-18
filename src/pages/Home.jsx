@@ -19,7 +19,7 @@ const Home = () => {
     // console.log(localStorage.getItem('token'))
     if(localStorage.getItem('token')=== null) {navigate('/signin'); return;}
     
-    axios.get(`http://localhost:4000/api/me`, { withCredentials: true, headers: {
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}api/me`, { withCredentials: true, headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     } })
       .then(res => {
@@ -74,7 +74,7 @@ const Home = () => {
           type="button"
           buttonName="Logout"
           onClick={() => {
-            axios.post(`http://localhost:4000/auth/logout`, { }, { withCredentials: true }).then(res => {
+            axios.post(`${import.meta.env.VITE_BACKEND_URL}auth/logout`, { }, { withCredentials: true }).then(res => {
               if(res.status === 204){
                 toast.success("Logged out successfully.");
               }
