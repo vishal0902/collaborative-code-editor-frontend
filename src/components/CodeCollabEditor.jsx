@@ -48,7 +48,7 @@ const CodeCollabEditor = ({ socketRef, editorRef, roomId, setClientCode, usernam
     })
 
       const state = EditorState.create({
-      doc: yText.toString() || "Hello",
+      doc: yText.toString() || "console.log('hello! Javascript.')".toString(),
       extensions: [
         basicSetup,
         oneDark,

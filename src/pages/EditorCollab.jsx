@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Client from "../components/Client";
 import Button from "../components/Button";
+import {Spinner} from "../components/Spinner"
 // import CodeEditor from "../components/CodeEditor";
 import initSocket  from "../socket";
 import ACTIONS from "../../Actions";
@@ -10,7 +11,6 @@ import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { handleRunCode } from "../utils/runCodeSnippet";
 // import { language } from "@codemirror/language";
-import Spinner from "../components/spinner";
 import CodeCollabEditor from "../components/CodeCollabEditor";
 import * as Y from 'yjs'
 import { Awareness, encodeAwarenessUpdate, applyAwarenessUpdate } from 'y-protocols/awareness.js'
@@ -355,7 +355,7 @@ const EditorCollab = () => {
                       </div>
                       <div className="w-auto overflow-y-scroll max-h-[15vh] min-h-[15vh] ">
                         {codeRunStatus === "running" ? (
-                          <div className="flex">Code running...&nbsp;<span className="mt-1.5"><Spinner /></span></div>
+                          <div className="flex">Code running...&nbsp;<span className="mt-1.5"> <Spinner /> </span></div>
                         ) : (
                           <div>
                             {output.stderr || output.stdout === null
