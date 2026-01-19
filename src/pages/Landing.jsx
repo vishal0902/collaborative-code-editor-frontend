@@ -43,6 +43,7 @@ const Landing = () => {
             <div className="flex">
                 <img
                     src="/wc_logo.webp"
+                    loading="eager"
                     alt="we.code"
                     className="w-30 h-14 drop-shadow-xl drop-shadow-gray-100 mr-4"
                 />
@@ -160,9 +161,9 @@ const Landing = () => {
               </div>
 
               <motion.div
-                animate={{ y: [0, -10, 0] }}
+                animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="absolute top-4 right-4 px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full text-xs text-green-300"
+                className="absolute top-4 right-4 px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full lg:text-xs text-[0.5rem] text-green-300"
               >
                 ● Live: 5 collaborators
               </motion.div>

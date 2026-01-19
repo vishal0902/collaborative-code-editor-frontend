@@ -251,13 +251,15 @@ const EditorCollab = () => {
                 />
                   <div className="flex space-x-2 mx-2">
                   <span
-                    className="text-black text-xs bg-white rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer"
+                    unselectable="true"
+                    className="border border-gray-600 text-black text-xs bg-white rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer"
                     type="button"
                     onClick={handleCopyRoomId}
                   >Copy Room ID</span>
 
                   <span
-                    className="text-white text-xs bg-gray-700 rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer "
+                    unselectable="true"
+                    className="border border-gray-200 text-white text-xs bg-gray-700 rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer "
                     type="button"
                     onClick={() => {
                       localStorage.removeItem("mySocketId");
@@ -268,7 +270,7 @@ const EditorCollab = () => {
                 </div>
               </div>
               <div className="flex gap-5 justify-between">
-                <p className="m-2 text-md font-semibold tracking-wider text-white/80">
+                <p className="m-2 text-md font-semibold tracking-wider bg-gradient-to-r bg-clip-text text-transparent from-green-200 via-green-400 to-sky-300">
                 Collaborators{" "}
                 </p>
               </div>
@@ -329,19 +331,24 @@ const EditorCollab = () => {
                 ▼
               </span>{" "}
               </div>
-                <div className="mt-1.5 flex gap-2">
-                  <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90 mx-2">Language Mode : </span> 
-                  <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90">{codeLanguage} </span> 
-                    <span className="ml-3 lg:ml-2"><motion.div
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                        className="relative px-3 py-2 bg-green-500/20 border border-green-500/50 rounded-full text-xs text-green-300"
+                <div className="flex justify-between">
+                  <div>
+                    <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90 mx-2 lg:text-base text-[0.625rem]">Language Mode : </span> 
+                    <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90 lg:text-base text-[0.625rem]">{codeLanguage} </span> 
+                  </div>
+
+                    <div className="mx-4">
+                      <motion.div
+                        animate={{ y: [0, 2, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="relative px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full lg:text-xs text-[0.5rem] text-green-300"
                       >
-                        ● Live: {client.length} {client.length === 1 ? <span>collaborator</span> : <span>collaborators</span>} 
-                    </motion.div></span>
+                        ● Live: {client.length} {client.length === 1 ? <span>collaborator</span> : <span className="">collaborators</span>} 
+                      </motion.div>
+                    </div>
                 </div>
               <div>
-                <div className="flex justify-center">
+                <div className="flex justify-center lg:mt-0 mt-2">
                   <button
                     onClick={async () => {
                       // setShowOutputSection(true);
