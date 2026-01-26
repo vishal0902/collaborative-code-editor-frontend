@@ -24,9 +24,11 @@ import { javascript } from "@codemirror/lang-javascript";
 import { yCollab } from "y-codemirror.next";
 import { EditorView } from "@codemirror/view";
 import ClientSelf from "../components/CleintSelf";
+import { ChatBox, ChatBubble } from "../components/ChatBox";
 
 const EditorCollab = () => {
   const [client, setClient] = useState([]);
+  // const [awayClients, setAwayClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const editorRef = useRef(null);
 
@@ -46,7 +48,27 @@ const EditorCollab = () => {
 
   const [codeLanguage, setCodeLanguage] = useState("javascript");
 
+  const [showChatBox, setShowChatBox] = useState(false);
 
+  const [msg, setMsg] = useState("");
+
+  const [msgBox, setMsgBox] = useState([])
+
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange',() => {
+      
+        if (document.visibilityState === 'hidden') {
+          socketRef.current.emit('user-away', {
+            roomId,
+          })
+        } else {
+          socketRef.current.emit('user-back', {
+            roomId,
+          })
+        }
+      })
+    }, []);
   
   useEffect(()=>{
     
@@ -127,14 +149,15 @@ const EditorCollab = () => {
       localStorage.setItem('mySocketId', userSocketId )
     })
 
-    socketRef.current.on(ACTIONS.JOINED, ({ clients, username }) => {
+    socketRef.current.on(ACTIONS.JOINED, ({ clients, username, chats }) => {
       // console.log(username, clients, location.state.username);
-      
       if (location.state.username !== username) {
         toast.success(`${username} joined the room.`);
       } 
       
       setClient(clients);
+      setMsgBox(chats)
+
     
     });
 
@@ -178,6 +201,22 @@ const EditorCollab = () => {
         setCodeLanguage(languageMode);
       }
     );
+
+    // user online status
+    socketRef.current.on('user-away', ({clients}) =>{
+      setClient(clients);
+    })
+    
+    socketRef.current.on('user-back', ({clients}) =>{
+      setClient(clients)
+    })
+
+    // chatbox
+
+    socketRef.current.on('msg-broadcast', ({chats}) =>{
+      setMsgBox(chats);
+    })
+    
 
      //Codemirror  
 
@@ -248,18 +287,18 @@ const EditorCollab = () => {
                   loading="lazy"
                   alt="logo-we.code"
                   className="drop-shadow-xl drop-shadow-gray-100"
-                />
+                /> 
                   <div className="flex space-x-2 mx-2">
                   <span
                     unselectable="true"
-                    className="border border-gray-600 text-black text-xs bg-white rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer"
+                    className="border select-none border-gray-600 text-black text-xs bg-white rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer"
                     type="button"
                     onClick={handleCopyRoomId}
                   >Copy Room ID</span>
 
                   <span
                     unselectable="true"
-                    className="border border-gray-200 text-white text-xs bg-gray-700 rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer "
+                    className="border select-none border-gray-200 text-white text-xs bg-gray-700 rounded-full hover:bg-gray-200 h-6 w-28 px-1 pt-0.5 text-center cursor-pointer "
                     type="button"
                     onClick={() => {
                       localStorage.removeItem("mySocketId");
@@ -271,19 +310,22 @@ const EditorCollab = () => {
               </div>
               <div className="flex gap-5 justify-between">
                 <p className="m-2 text-md font-semibold tracking-wider bg-gradient-to-r bg-clip-text text-transparent from-green-200 via-green-400 to-sky-300">
-                Collaborators{" "}
+                Collaborators{" "} 
                 </p>
               </div>
               <div className="flex flex-row lg:flex-wrap gap-2 lg:p-2 overflow-hidden mb-2">
                 <ClientSelf username={location.state.username} avatar={location.state.avatar} />
-                {client?.filter(c => c.socketId !== localStorage.getItem("mySocketId")).map((client) => (
-                  <Client
-                    localUser={location.state.username}
-                    key={client.socketId}
-                    username={client.username}
-                    avatar={client.avatar}
-                  />
-                ))}
+                {client?.filter(c => c.socketId !== localStorage.getItem("mySocketId")).map((client) => 
+                      (<Client
+                      localUser={location.state.username}
+                      key={client.socketId}
+                      username={client.username}
+                      avatar={client.avatar}
+                      status={client.status}
+                      />)
+               
+                  
+                )}
               </div>
             </div>
 
@@ -344,7 +386,7 @@ const EditorCollab = () => {
                         className="relative px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full lg:text-xs text-[0.5rem] text-green-300"
                       >
                         ● Live: {client.length} {client.length === 1 ? <span>collaborator</span> : <span className="">collaborators</span>} 
-                      </motion.div>
+                      </motion.div> 
                     </div>
                 </div>
               <div>
@@ -376,50 +418,83 @@ const EditorCollab = () => {
                   </button>
                 </div>
               </div>
-            </div>
-            <div ref={editorRef} style={{height:'100vh', width:'100vw' }}></div>
+            </div> 
+            <div className="relative">
+              <div ref={editorRef} style={{height:'100vh', width:'100vw' }}></div>
+              
+              {/* /////////// chatBox ///////// */}
+              {showChatBox && 
+                <div className="fixed md:bottom-25 bottom-13 right-5 p-0">
+                  <ChatBox msg={msg} setMsg={setMsg} socketRef={socketRef} roomId={roomId} msgBox={msgBox} />
+                </div>}
+              <div className="fixed md:bottom-8 bottom-5 md:right-8 right-5" onClick={() => setShowChatBox(prev => !prev)}><ChatBubble /></div>
+            </div> 
 
             
             {showOutputSection && (
-              <div className="absolute w-full bottom-0 bg-slate-800 text-white font-mono max-h-[20vh] min-h-[20vh] border-t-2 border-green-400/80">
-                <div className=" m-2 ">
-                  {codeRunStatus && (
-                    <div>
-                      <div className=" text-white/50 w-full ">
-                        {output?.stderr ? (
-                          <span className="border-b">Problem</span>
-                        ) : (
-                          <span className="border-b">Output</span>
-                        )}
+              <div className="absolute  bottom-0 bg-gradient-to-t from-slate-900 to-slate-800 text-white font-mono max-h-[20vh] min-h-[20vh] border-t-2 border-green-500/40 shadow-2xl w-[100%]">
+                <div className="flex flex-col h-full">
+                  {/* Header */}
+                  <div className="flex items-center px-4 py-3 border-b  border-slate-700/50">
+                    <div className="flex items-center gap-2">
+                      {codeRunStatus === "running" ? (
+                        <>
+                          <span className="text-yellow-400">⚙️</span>
+                          <span className="text-sm font-semibold text-yellow-300">Executing Code</span>
+                        </>
+                      ) : output?.stderr ? (
+                        <>
+                          <span className="text-red-400">⚠️</span>
+                          <span className="text-sm font-semibold text-red-300">Error Output</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-green-400">✓</span>
+                          <span className="text-sm font-semibold text-green-300">Program Output</span>
+                        </>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        socketRef.current.emit(ACTIONS.CLOSE_TERMINAL, {
+                          roomId,
+                          showOutputSection: false,
+                        });
+                      }}
+                      className="flex fixed right-3 items-center justify-center w-7 h-7 pb-[0.9rem]! px-[1rem]! text-xl!  rounded-md bg-slate-700/50 hover:bg-red-500/30 text-slate-300 hover:text-red-400 transition-all duration-200 border border-slate-600/50 hover:border-red-500/50"
+                    >
+                      x
+                    </button>
+                  </div>
+
+                  {/* Output Content */}
+                  <div className="flex-1 overflow-y-auto px-4 py-2 bg-slate-900/40">
+                    {codeRunStatus === "running" ? (
+                      <div className="flex items-center gap-3 text-slate-300 py-8">
+                        <span className="text-lg"><Spinner /></span>
+                        <span className="text-sm font-medium">Code is executing...</span>
                       </div>
-                      <div className="w-auto overflow-y-scroll max-h-[15vh] min-h-[15vh] ">
-                        {codeRunStatus === "running" ? (
-                          <div className="flex">Code running...&nbsp;<span className="mt-1.5"> <Spinner /> </span></div>
+                    ) : codeRunStatus === "completed" ? (
+                      <div className="space-y-0">
+                        {output?.stderr ? (
+                          <div className="text-red-300/90 text-xs leading-relaxed whitespace-pre-wrap break-words">
+                            {output.stderr}
+                          </div>
+                        ) : output?.stdout ? (
+                          <div className="text-green-300/90 text-xs leading-relaxed whitespace-pre-wrap break-words">
+                            {output.stdout.split("\n").map((str, index) => (
+                              <div key={index} className="hover:bg-slate-700/20 px-1">
+                                {str}
+                              </div>
+                            ))}
+                          </div>
                         ) : (
-                          <div>
-                            {output.stderr || output.stdout === null
-                              ? output.stderr
-                              : output.stdout
-                                  .split("\n")
-                                  .map((str, index) => (
-                                    <div key={index} className="m-0! ">{str}</div>
-                                  ))}
+                          <div className="text-slate-400 text-xs italic py-4">
+                            No output received
                           </div>
                         )}
                       </div>
-                    </div>
-                  )}
-                  <div
-                    onClick={() => {
-                      socketRef.current.emit(ACTIONS.CLOSE_TERMINAL, {
-                        roomId,
-                        showOutputSection: false,
-                      });
-                    }}
-                    className="bg-slate-800 hover:bg-slate-600 text-white absolute top-1 right-1 cursor-pointer border-1 border-gray-500 px-4 rounded-sm "
-                  >
-                    {" "}
-                    x{" "}
+                    ) : null}
                   </div>
                 </div>
               </div>

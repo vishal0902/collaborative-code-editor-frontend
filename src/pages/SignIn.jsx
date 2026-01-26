@@ -31,6 +31,7 @@ const SignIn = () => {
       setLoading(false);
       navigate('/home');
     } catch (error) {
+      setLoading(false);
       toast.error('Invalid credentials.')
       // console.log(error)
     }
