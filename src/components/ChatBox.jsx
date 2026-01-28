@@ -60,7 +60,7 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
           <div ref={lastElementRef}></div>
         </div>
       </div>
-      <div className="flex mt-4 gap-2">
+      <div className="flex mt-4 min-w-auto">
         <input 
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={handleEnter} 
@@ -68,12 +68,12 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
           placeholder="Message..." 
           type="text"
           spellCheck="false" 
-          className="flex-1 rounded-lg border border-slate-600/50 bg-slate-800 md:px-3 px-2 md:py-2 py-0 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30 transition-all"
+          className="flex-1 rounded-l-lg border border-slate-600/50 bg-slate-800 md:px-3 px-2 md:py-2 py-0 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30 transition-all"
         />
         <button 
           onClick={handleSendMessage}
           type='button' 
-          className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold md:px-3! px-2! md:py-2! py-0! rounded-lg transition-colors duration-200 shadow-lg hover:shadow-green-500/50"
+          className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold md:px-3! px-2! md:py-2! py-0! rounded-r-lg! rounded-l-none! transition-colors duration-200 shadow-lg hover:shadow-green-500/50"
         > 
           {"→"} 
         </button>

@@ -461,7 +461,7 @@ const EditorCollab = () => {
                           showOutputSection: false,
                         });
                       }}
-                      className="flex fixed right-3 items-center justify-center w-7 h-7 pb-[0.9rem]! px-[1rem]! text-xl!  rounded-md bg-slate-700/50 hover:bg-red-500/30 text-slate-300 hover:text-red-400 transition-all duration-200 border border-slate-600/50 hover:border-red-500/50"
+                      className="flex fixed right-3 items-center justify-center w-7 h-7 pb-[0.9rem]! px-[1rem]! text-xl!  rounded-md bg-slate-700/50 hover:bg-red-500/30 text-slate-300 hover:text-red-400 border border-slate-600/50 hover:border-red-500/50"
                     >
                       x
                     </button>
