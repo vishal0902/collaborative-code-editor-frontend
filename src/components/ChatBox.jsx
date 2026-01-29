@@ -60,7 +60,7 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
           <div ref={lastElementRef}></div>
         </div>
       </div>
-      <div className="flex mt-4 min-w-auto">
+      <div className="flex mt-4 min-w-fit">
         <input 
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={handleEnter} 
@@ -68,14 +68,19 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
           placeholder="Message..." 
           type="text"
           spellCheck="false" 
-          className="flex-1 rounded-l-lg border border-slate-600/50 bg-slate-800 md:px-3 px-2 md:py-2 py-0 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30 transition-all"
+          className="min-w-[80%] flex-1 rounded-l-lg border border-slate-600/50 bg-slate-800 md:px-3 px-2 md:py-2 py-0 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30 transition-all"
         />
         <button 
           onClick={handleSendMessage}
           type='button' 
-          className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold md:px-3! px-2! md:py-2! py-0! rounded-r-lg! rounded-l-none! transition-colors duration-200 shadow-lg hover:shadow-green-500/50"
+          className="min-w-[20%] bg-green-500 hover:bg-green-600 text-white text-sm font-semibold md:px-3! px-2! md:py-2! py-0! rounded-r-lg! rounded-l-none! transition-colors duration-200 shadow-lg hover:shadow-green-500/50"
         > 
-          {"→"} 
+          {/* {"→"}  */}
+          {/* <img src="../arrow.svg" height={2} className="text-gray-600!" /> */}
+          <svg className="w-6 h-4 text-gray-800 dark:text-white/90" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+</svg>
+
         </button>
       </div>
 

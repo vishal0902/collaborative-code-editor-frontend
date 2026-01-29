@@ -186,6 +186,7 @@ const EditorCollab = () => {
         // setShowOutputSection(showOutputSection);
         setCodeRunStatus(runStatus);
         setOutput(data);
+        console.log(data);
       }
     );
 
@@ -468,15 +469,15 @@ const EditorCollab = () => {
                   </div>
 
                   {/* Output Content */}
-                  <div className="flex-1 overflow-y-auto px-4 py-2 bg-slate-900/40">
+                  <div className="flex-1 w-auto overflow-y-scroll max-h-[15vh] min-h-[15vh] px-4 py-2 bg-slate-900/40">
                     {codeRunStatus === "running" ? (
-                      <div className="flex items-center gap-3 text-slate-300 py-8">
+                      <div className="flex items-center gap-4 text-slate-300 py-2">
                         <span className="text-lg"><Spinner /></span>
                         <span className="text-sm font-medium">Code is executing...</span>
                       </div>
                     ) : codeRunStatus === "completed" ? (
-                      <div className="space-y-0">
-                        {output?.stderr ? (
+                      <div className="space-y-0 mt-2">
+                        {output?.stderr || output?.stdout === null ? (
                           <div className="text-red-300/90 text-xs leading-relaxed whitespace-pre-wrap break-words">
                             {output.stderr}
                           </div>
