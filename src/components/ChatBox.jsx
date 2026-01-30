@@ -7,7 +7,7 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
 
   useEffect(()=> {
     if(lastElementRef.current) {
-      lastElementRef.current.scrollIntoView({behaviour: "smooth"})
+      lastElementRef.current.scrollIntoView({behaviour: "smooth", block: "start"})
     }
   }, [msgBox]);
   
@@ -21,6 +21,7 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
   }
 
   const handleEnter = (e) => {
+    // console.log(msgBox)
     if(e.key === 'Enter'){
       handleSendMessage();
     }
@@ -36,22 +37,25 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
       </div>
 
       <div className="bg-slate-800/50 md:min-h-[400px] min-h-[200px] md:max-h-[400px] max-h-[200px] rounded-lg p-3 text-xs overflow-y-auto border border-slate-700/30 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="space-y-3">
+        <div className="space-y-1">
           {!msgBox.length ?              
              <div className="text-slate-400 md:text-sm text-[0.8rem]  max-w-fit   transition-colors fixed bottom-13 md:bottom-18 justify-self-center">no messages</div>
               :
-             msgBox.map(([key, m]) =>{
+             msgBox?.map(([key, m], index) =>{
               
                 if(localStorage.getItem('mySocketId') === m.socketId) {
                   return (
-                    <div key={key} className="flex flex-col gap-1 justify-self-end">
-                      <div style={{color: m.color}} className="md:text-[0.7rem] text-[0.5rem] font-medium text-end">You</div>
+                    <div key={key} className="flex flex-col space-y-0.5 justify-self-end">
+                      { (index !== 0) ? (msgBox[index][1]?.socketId !== msgBox[index-1][1]?.socketId) && <div style={{color: m.color}} className="md:text-[0.7rem] text-[0.5rem] font-medium text-end mt-2">You</div> : <div style={{color: m.color}} className="md:text-[0.7rem] text-[0.5rem] font-medium text-end  mt-2">You</div>}
                       <div className="text-slate-700 bg-slate-100 md:text-[0.8rem] text-[0.6rem] rounded-lg px-3 py-1 max-w-fit text-wrap break-words border border-slate-600/30">{m.msg}</div>
                     </div>)
                 } else {
                   return (
-                    <div key={key} className="flex flex-col gap-1">
-                      <div style={{color: m.color}}  className="text-slate-400 md:text-[0.7rem] text-[0.5rem] font-medium">{m.userName}</div>
+                    <div key={key} className="flex flex-col space-y-0.5">
+                      { (index !== 0) ? 
+                          ((msgBox[index][1]?.socketId !== msgBox[index-1][1]?.socketId)  && <div style={{color: m.color}}  className="text-slate-400 md:text-[0.7rem] text-[0.5rem] font-medium  mt-2">{m.userName}</div>) :
+                          <div style={{color: m.color}}  className="text-slate-400 md:text-[0.7rem] text-[0.5rem] font-medium  mt-2">{m.userName}</div>
+                         }
                       <div className="text-slate-200 bg-slate-700/60 md:text-[0.8rem] text-[0.6rem] rounded-lg px-3 py-1 max-w-fit text-wrap break-words border border-slate-600/30 hover:bg-slate-700/80 transition-colors">{m.msg}</div>
                     </div>)
                 }
