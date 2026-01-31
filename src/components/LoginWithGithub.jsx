@@ -8,7 +8,7 @@ function LoginWithGithub() {
                hover:opacity-80"
             onClick={()=>window.location.href = `${import.meta.env.VITE_BACKEND_URL}auth/github`}
     >
-    Continue with &nbsp; <img className='size-7 bg-green-600/90 ' src='github-icon.png'/>
+    Continue with &nbsp; <img className='size-7 ' src='github-icon.png'/>
     </button>
   )
 }

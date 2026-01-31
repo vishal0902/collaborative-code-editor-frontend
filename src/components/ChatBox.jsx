@@ -4,6 +4,7 @@ import { useRef } from "react";
 export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
   
   const lastElementRef = useRef(null);
+  const inputRef = useRef();
 
   useEffect(()=> {
     if(lastElementRef.current) {
@@ -12,12 +13,16 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
   }, [msgBox]);
   
   const handleSendMessage = () => {
-    socketRef.current.emit('msg-sent', {
-      roomId,
-      msg,
-      time: Date.now().toString()
-    })
+    if(msg !== "") {
+      socketRef.current.emit('msg-sent', {
+        roomId,
+        msg,
+        time: Date.now().toString()
+      })
+    }
     setMsg("");
+    inputRef.current.focus();
+
   }
 
   const handleEnter = (e) => {
@@ -32,8 +37,8 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
   
   return (
     <div className="flex flex-col bg-slate-900/95 backdrop-blur-sm justify-center min-h-fit p-4 rounded-xl border border-slate-700/50 shadow-2xl md:w-80 w-60">
-      <div className="text-green-400 text-sm font-semibold mb-3 tracking-wide flex items-center gap-2">
-        <span className="">Live Chat</span><div className="flex rounded-full md:w-[0.3rem] md:h-[0.3rem] w-1 h-1 bg-green-500 md:my-1 mt-1"></div>
+      <div className="text-green-400 text-sm font-semibold mb-3 tracking-wide flex  gap-1">
+        <span className="align-middle">&#8226; Live Chat </span>
       </div>
 
       <div className="bg-slate-800/50 md:min-h-[400px] min-h-[200px] md:max-h-[400px] max-h-[200px] rounded-lg p-3 text-xs overflow-y-auto border border-slate-700/30 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -68,6 +73,7 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
       
       <div className="flex mt-4">
         <input 
+          ref={inputRef}
           onChange={(e) => setMsg(e.target.value)}
           onKeyDown={handleEnter} 
           value={msg}
@@ -79,11 +85,9 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
         <button 
           onClick={handleSendMessage}
           type='button' 
-          className="flex relative min-w-[15%]! bg-green-500 hover:bg-green-600 text-white text-sm font-semibold md:px-3! px-2! md:py-2! py-0! rounded-r-md! rounded-l-none! transition-colors duration-200 shadow-lg hover:shadow-green-500/50"
+          className="flex relative min-w-[15%]! bg-green-500 hover:bg-green-600 text-white text-sm font-semibold md:px-3! px-2! md:py-2! py-0! pb-1! rounded-r-md! rounded-l-none! transition-colors duration-200 shadow-lg hover:shadow-green-500/50"
         > 
           {"→"} 
-         
-
         </button>
       </div>
 
