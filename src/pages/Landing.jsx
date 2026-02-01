@@ -5,7 +5,51 @@ import Button from "../components/Button";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [isHovered, setIsHovered] = useState(false);
+  const features = [
+    {
+      title: "Real-time Sync",
+      description:
+        "See your team's code changes instantly with WebSocket-powered synchronization.",
+      icon: "⚡",
+    },
+    {
+      title: "Multiple Languages",
+      description:
+        "Support for JavaScript, Python, C++, and more with syntax highlighting.",
+      icon: "🔤",
+    },
+    {
+      title: "Instant Rooms",
+      description:
+        "Create or join a collaborative room with just a few clicks.",
+      icon: "🚀",
+    },
+    // {
+    //   title: "User Avatars",
+    //   description:
+    //     "See who's editing with beautiful avatars and presence indicators.",
+    //   icon: "👥",
+    // },
+    {
+      title: "Real-time Chat",
+      description:
+        "Chat seamlessly with the collaborators in real-time while coding.",
+      icon: "🎭",
+    },
+    {
+      title: "Secure Auth",
+      description:
+        "JWT-based authentication with GitHub OAuth integration for security.",
+      icon: "🔐",
+    },
+    {
+      title: "Code Execution",
+      description:
+        "Run your code and see output in real-time with our built-in executor.",
+      icon: "▶️",
+    },
+    
+  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -39,37 +83,35 @@ const Landing = () => {
         transition={{ duration: 0.6 }}
         className="relative z-50 flex items-center justify-between px-2 lg:px-8 py-6 border-b border-white/10 backdrop-blur-sm"
       >
-        
-            <div className="flex">
-                <img
-                    src="/wc_logo.webp"
-                    loading="eager"
-                    alt="we.code"
-                    className="w-30 h-14 drop-shadow-xl drop-shadow-gray-100 mr-4"
-                />
-                <span className="lg:flex hidden text-4xl font-bold bg-gradient-to-r from-green-300 via-green-400 to-sky-400 bg-clip-text text-transparent">
-                    we.code
-                </span>
-            </div>
-            <div className="flex items-center gap-4">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate("/signin")}
-                    className="px-6 py-2 text-white/80 hover:text-white transition-colors"
-                >
-                    Sign In
-                </motion.button>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate("/signup")}
-                    className="px-6 py-2 text-white bg-gradient-to-r from-green-700 to-green-600 hover:from-green-500 hover:to-green-400 rounded-lg shadow-lg shadow-green-500/20 ring-1 ring-green-400/40"
-                >
-                    Get Started
-                </motion.button>
-            </div>
-        
+        <div className="flex">
+          <img
+            src="/wc_logo.webp"
+            loading="eager"
+            alt="we.code"
+            className="w-30 h-14 drop-shadow-xl drop-shadow-gray-100 mr-4"
+          />
+          <span className="lg:flex hidden text-4xl font-bold bg-gradient-to-r from-green-300 via-green-400 to-sky-400 bg-clip-text text-transparent">
+            we.code
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/signin")}
+            className="px-6 py-2 text-white/80 hover:text-white transition-colors"
+          >
+            Sign In
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/signup")}
+            className="px-6 py-2 text-white bg-gradient-to-r from-green-700 to-green-600 hover:from-green-500 hover:to-green-400 rounded-lg shadow-lg shadow-green-500/20 ring-1 ring-green-400/40"
+          >
+            Get Started
+          </motion.button>
+        </div>
       </motion.nav>
 
       <motion.div
@@ -83,7 +125,7 @@ const Landing = () => {
           className="mb-6 px-4 py-2 rounded-full bg-white/10 border border-cyan-400/30 backdrop-blur-sm"
         >
           <span className="text-sm text-cyan-300 font-medium">
-            ✨ Real-time Collaborative Code Editor
+            Real-time Collaborative Code Editor
           </span>
         </motion.div>
 
@@ -135,9 +177,7 @@ const Landing = () => {
 
         <motion.div
           variants={itemVariants}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="relative w-full max-w-4xl h-80 rounded-2xl p-[1px] bg-gradient-to-br from-white/25 via-cyan-300/20 to-white/10 shadow-[0_10px_60px_rgba(0,0,0,0.6)] overflow-hidden"
+          className="relative w-full max-w-4xl h-70 rounded-2xl p-[1px] bg-gradient-to-br from-white/25 via-cyan-300/20 to-white/10 shadow-[0_10px_60px_rgba(0,0,0,0.6)] overflow-hidden"
         >
           <div className="w-full h-full rounded-2xl bg-[rgba(6,8,12,0.7)] backdrop-blur-2xl border border-white/10 flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-sky-400/5" />
@@ -196,44 +236,7 @@ const Landing = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Feature Cards */}
-            {[
-              {
-                title: "Real-time Sync",
-                description:
-                  "See your team's code changes instantly with WebSocket-powered synchronization.",
-                icon: "⚡",
-              },
-              {
-                title: "Multiple Languages",
-                description:
-                  "Support for JavaScript, Python, C++, and more with syntax highlighting.",
-                icon: "🔤",
-              },
-              {
-                title: "Instant Rooms",
-                description:
-                  "Create or join a collaborative room with just a few clicks.",
-                icon: "🚀",
-              },
-              {
-                title: "User Avatars",
-                description:
-                  "See who's editing with beautiful avatars and presence indicators.",
-                icon: "👥",
-              },
-              {
-                title: "Secure Auth",
-                description:
-                  "JWT-based authentication with GitHub OAuth integration for security.",
-                icon: "🔐",
-              },
-              {
-                title: "Code Execution",
-                description:
-                  "Run your code and see output in real-time with our built-in executor.",
-                icon: "▶️",
-              },
-            ].map((feature, index) => (
+            {features.map((feature, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
@@ -257,57 +260,6 @@ const Landing = () => {
         </motion.div>
       </motion.section>
 
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-        className="relative z-10 py-20 px-4 md:px-12"
-      >
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto text-center p-12 rounded-2xl bg-gradient-to-br from-white/10 via-cyan-300/10 to-white/5 border border-cyan-400/20 backdrop-blur-sm"
-        >
-          <motion.h2
-            variants={itemVariants}
-            className="text-4xl font-bold text-white mb-4"
-          >
-            Ready to Code Together?
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            className="text-white/70 mb-8 text-lg"
-          >
-            Join thousands of developers collaborating in real-time. Start your
-            journey today.
-          </motion.p>
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/signup")}
-              className="px-8 py-4 text-white bg-gradient-to-r from-green-700 to-green-600 hover:from-green-500 hover:to-green-400 rounded-lg shadow-lg shadow-green-500/20 ring-1 ring-green-400/40 transition-all duration-300"
-            >
-              Create Free Account
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/signin")}
-              className="px-8 py-4 border-2 border-cyan-400/50 text-white font-semibold rounded-lg hover:border-cyan-300 hover:bg-white/5 transition-all duration-300"
-            >
-              Sign In
-            </motion.button>
-          </motion.div>
-        </motion.div>
-      </motion.section>
-
       {/* Footer */}
       <motion.footer
         initial={{ opacity: 0 }}
@@ -321,13 +273,11 @@ const Landing = () => {
           reserved.
         </p>
         <div className="mt-4 flex justify-center gap-6">
-          <a href="#" className="hover:text-cyan-300 transition-colors">
-            Privacy
-          </a>
-          <a href="#" className="hover:text-cyan-300 transition-colors">
-            Terms
-          </a>
-          <a href="#" className="hover:text-cyan-300 transition-colors">
+          <a
+            href="https://github.com/vishal0902/collaborative-code-editor-frontend"
+            target="_blank"
+            className="hover:text-cyan-300 transition-colors"
+          >
             GitHub
           </a>
         </div>

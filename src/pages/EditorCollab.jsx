@@ -426,9 +426,9 @@ const EditorCollab = () => {
               {/* /////////// chatBox ///////// */}
               {showChatBox && 
                 <div className="fixed md:bottom-25 bottom-13 right-5 p-0">
-                  <ChatBox msg={msg} setMsg={setMsg} socketRef={socketRef} roomId={roomId} msgBox={msgBox} />
+                  <ChatBox msg={msg} setMsg={setMsg} socketRef={socketRef} roomId={roomId} msgBox={msgBox} setShowChatBox={setShowChatBox} />
                 </div>}
-              <div className="fixed md:bottom-8 bottom-5 md:right-8 right-5" onClick={() => setShowChatBox(prev => !prev)}><ChatBubble /></div>
+              <div className="fixed md:bottom-8 bottom-4 md:right-8 right-5" onClick={() => setShowChatBox(prev => !prev)}><ChatBubble /></div>
             </div> 
 
             

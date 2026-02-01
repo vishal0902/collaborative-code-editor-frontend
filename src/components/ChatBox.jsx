@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRef } from "react";
 
-export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
+export function ChatBox({msg, setMsg, socketRef, roomId, msgBox, setShowChatBox}) {
   
   const lastElementRef = useRef(null);
   const inputRef = useRef();
@@ -37,14 +37,14 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
   
   return (
     <div className="flex flex-col bg-slate-900/95 backdrop-blur-sm justify-center min-h-fit p-4 rounded-xl border border-slate-700/50 shadow-2xl md:w-80 w-60">
-      <div className="text-green-400 text-sm font-semibold mb-3 tracking-wide flex  gap-1">
-        <span className="align-middle">&#8226; Live Chat </span>
+      <div className="text-green-400 text-sm font-semibold mb-3 tracking-wide flex justify-between">
+        <span className="align-middle">&#8226; Live Chat </span><span onClick={()=>setShowChatBox(false)} style={{userSelect: "none"}} className="border border-gray-500 bg-green-500 text-white hover:bg-green-600 px-2 rounded-sm text-xs">{"X"}</span>
       </div>
 
       <div className="bg-slate-800/50 md:min-h-[400px] min-h-[200px] md:max-h-[400px] max-h-[200px] rounded-lg p-3 text-xs overflow-y-auto border border-slate-700/30 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         <div className="space-y-1">
           {!msgBox.length ?              
-             <div className="text-slate-400 md:text-sm text-[0.8rem]  max-w-fit   transition-colors fixed bottom-13 md:bottom-18 justify-self-center">no messages</div>
+             <div className="text-slate-400 md:text-sm text-[0.8rem]  max-w-fit   transition-colors fixed bottom-15 md:bottom-18 justify-self-center">no messages</div>
               :
              msgBox?.map(([key, m], index) =>{
               
@@ -96,7 +96,7 @@ export function ChatBox({msg, setMsg, socketRef, roomId, msgBox}) {
 }
 
 export function ChatBubble() {
-  return (<button className="text-center text-white bg-green-500 hover:bg-green-600 md:px-6! px-2! md:py-4! py-1! rounded-full md:text-xl! text-xs! font-semibold shadow-lg hover:shadow-green-500/50 transition-all duration-200 border border-green-400/20">
+  return (<button className="text-center text-white bg-green-500 hover:bg-green-600 md:px-6! px-4! md:py-4! py-2! rounded-full md:text-xl! text-xs! font-semibold shadow-lg hover:shadow-green-500/50 transition-all duration-200 border border-green-400/20">
       💬 Chat
   </button>)
 }
