@@ -7,7 +7,7 @@ export function OutputSection({
   socketRef,
   roomId
 }) {
-  return <div className="absolute  bottom-0 bg-gradient-to-t from-slate-900 to-slate-800 text-white font-mono max-h-[20vh] min-h-[20vh] border-t-2 border-green-500/40 shadow-2xl w-[100%]">
+  return <div className="absolute bottom-0 bg-gradient-to-t from-slate-900 to-slate-800 text-white font-mono max-h-[20vh] min-h-[20vh] border-t-2 border-green-500/40 shadow-2xl w-[100%]">
                 <div className="flex flex-col h-full">
                   {
         /* Header */

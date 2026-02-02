@@ -52,6 +52,7 @@ const Home = () => {
     navigate(`/editor/${roomId}`, {
       state: {
         username,
+        userId: user._id,
         avatar: user.avatar
       },
     });
@@ -80,6 +81,7 @@ const Home = () => {
               }
             })
             localStorage.removeItem('token');
+            localStorage.removeItem('currentUserId');
             navigate('/')
             }}
         />

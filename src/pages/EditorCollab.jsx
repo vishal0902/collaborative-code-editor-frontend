@@ -36,7 +36,7 @@ const EditorCollab = () => {
   const socketRef = useRef();
 
   const location = useLocation();
-  const { username, avatar } = location.state;
+  const { username, userId, avatar } = location.state;
   const { roomId } = useParams();
   const navigate = useNavigate();
 
@@ -94,6 +94,7 @@ const EditorCollab = () => {
     socketRef.current.emit("join-room",{
       roomId,
       username,
+      userId,
       avatar
     })
 
@@ -146,8 +147,8 @@ const EditorCollab = () => {
     })
 
 
-    socketRef.current.on("save-soketId", ({userSocketId})=> {
-      localStorage.setItem('mySocketId', userSocketId )
+    socketRef.current.on("save-userId", ({currentUserId})=> {
+      localStorage.setItem('currentUserId', currentUserId )
     })
 
     socketRef.current.on(ACTIONS.JOINED, ({ clients, username, chats }) => {
@@ -316,7 +317,7 @@ const EditorCollab = () => {
               </div>
               <div className="flex flex-row lg:flex-wrap gap-2 lg:p-2 overflow-hidden mb-2">
                 <ClientSelf username={location.state.username} avatar={location.state.avatar} />
-                {client?.filter(c => c.socketId !== localStorage.getItem("mySocketId")).map((client) => 
+                {client?.filter(c => c.userId !== localStorage.getItem("currentUserId")).map((client) => 
                       (<Client
                       localUser={location.state.username}
                       key={client.socketId}
@@ -413,7 +414,7 @@ const EditorCollab = () => {
                         });
                       });
                     }}
-                    className="m-1 bg-green-500/90 hover:opacity-50 text-sm text-white lg:min-w-[6vw] min-w-[96vw]   py-[2px]! rounded-sm! "
+                    className="transition-all m-1 bg-green-500/90 hover:opacity-50 text-sm text-white lg:min-w-[6vw] min-w-[96vw]   py-[2px]! rounded-sm! "
                   >
                     Run
                   </button>
