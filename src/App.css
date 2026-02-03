@@ -17,17 +17,18 @@ select {
 }
 
 option {
-  background-color: #314158;
+  font-size: small;
+  
+  background-color: #292f39;
   color: whitesmoke;
-  font-family: monospace;
+  /* font-family: monospace; */
   padding: 5px;
-  border-radius: 50px;
 }
 
 option:hover {
   background-color: rgb(46, 47, 48);
   color: white;
-  border-radius: 50px;
+  border-radius: 100px;
 
 }
 

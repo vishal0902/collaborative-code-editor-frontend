@@ -266,11 +266,11 @@ const EditorCollab = () => {
       <div className="relative min-h-screen overflow-hidden bg-[radial-gradient(1200px_600px_at_0%_0%,rgba(2,6,23,0.6),transparent_60%),radial-gradient(1200px_600px_at_100%_100%,rgba(8,47,73,0.35),transparent_60%)]">
         <div className="pointer-events-none absolute inset-0 backdrop-blur-[2px]" />
 
-        <div className="lg:grid lg:grid-cols-12 h-screen">
+        <div className="md:grid md:grid-cols-12 h-screen">
           {/* Aside section start */}
-          <div className="lg:h-screen h-[26vh] lg:col-span-2 bg-gradient-to-b from-slate-950 via-slate-700 to-slate-800 flex flex-col justify-between max-w-screen relative overflow-hidden">
+          <div className="md:h-screen h-fit md:col-span-2 bg-gradient-to-b from-slate-950 via-slate-700 to-slate-800 flex flex-col justify-between max-w-screen relative overflow-hidden">
             <div>
-              <div className="logo-container m-4 pb-4 border-b border-white/10 lg:flex hidden">
+              <div className="logo-container m-4 pb-4 border-b border-white/10 md:flex hidden">
                 <img
                   width={120}
                   height={100}
@@ -281,7 +281,7 @@ const EditorCollab = () => {
                 />
               </div>
               <div>
-                <div className="mt-4 ml-2 justify-between lg:hidden flex ">
+                <div className="mt-4 ml-2 justify-between md:hidden flex ">
                   <img
                   width={36}
                   height={10}
@@ -315,11 +315,10 @@ const EditorCollab = () => {
                 Collaborators{" "} 
                 </p>
               </div>
-              <div className="flex flex-row lg:flex-wrap gap-2 lg:p-2 overflow-hidden mb-2">
+              <div className="flex flex-row md:flex-wrap gap-2 md:p-2 overflow-hidden">
                 <ClientSelf username={location.state.username} avatar={location.state.avatar} />
                 {client?.filter(c => c.userId !== localStorage.getItem("currentUserId")).map((client) => 
                       (<Client
-                      localUser={location.state.username}
                       key={client.socketId}
                       username={client.username}
                       avatar={client.avatar}
@@ -331,7 +330,7 @@ const EditorCollab = () => {
               </div>
             </div>
 
-            <div className="p-3 lg:flex lg:flex-col hidden">
+            <div className="p-3 md:flex md:flex-col hidden">
               <Button
                 cn="min-w-full text-black bg-white rounded-lg shadow-lg hover:bg-gray-200"
                 type="button"
@@ -353,46 +352,48 @@ const EditorCollab = () => {
 
           {/* Aside section end */}
 
-          <div className="max-h-screen lg:col-span-10 bg-gray-100/10">
-            <div className="w-full relative bg-gray-900/10 lg:flex flex-row justify-between pt-1">
-              <div className="relative"><select
+          <div className="md:h-screen h-fit md:col-span-10 bg-gray-100/10">
+            <div className="w-full relative bg-gray-900/10 md:flex flex-row justify-between pt-1">
+              <div className="relative">
+              <select
                 value={codeLanguage}
                 onChange={(e) => {
                   socketRef.current.emit(ACTIONS.CHANGE_LANGUAGE, {
                     roomId,
-                    languageMode: e.target.value,
+                    languageMode: e.target.value || 'javascript',
                   });
                 }}
-                className="cursor-pointer font-mono appearance-none pl-4 pr-8 bg-slate-700/50 text-white/80 border-1 border-slate-700 rounded-sm m-1"
-                name="pets"
+                className="cursor-pointer appearance-none px-4 bg-slate-700/50 text-white/80 border-1 border-slate-700 rounded-sm ml-2"
+                name=""
                 id="language-select"
               >
+                <option value="javascript" >Choose Language</option>
                 <option value="javascript">Javascript</option>
                 <option value="python">Python</option>
                 <option value="cpp">C++</option>
               </select>
-              <span className="absolute text-xs/tight left-30 top-3/14 text-gray-400">
+              {/* <span className="absolute text-xs/tight left-30 top-3/14 text-gray-400">
                 ▼
-              </span>{" "}
+              </span> */}
               </div>
                 <div className="flex justify-between">
                   <div>
-                    <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90 mx-2 lg:text-base text-[0.625rem]">Language Mode : </span> 
-                    <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90 lg:text-base text-[0.625rem]">{codeLanguage} </span> 
+                    <span className=" fill-yellow-500 drop-shadow-sm drop-shadow-white/90 mx-2 md:text-base text-[0.625rem]">Language Mode : </span> 
+                    <span className="text-green-500 fill-yellow-500 drop-shadow-lg drop-shadow-slate-100/90 md:text-base text-[0.625rem]">{codeLanguage} </span> 
                   </div>
 
                     <div className="mx-4">
                       <motion.div
                         animate={{ y: [0, 2, 0] }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        className="relative px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full lg:text-xs text-[0.5rem] text-green-300"
+                        className="relative px-3 py-1 bg-green-500/20 border border-green-500/50 rounded-full md:text-xs text-[0.5rem] text-green-300"
                       >
                         ● Live: {client.length} {client.length === 1 ? <span>collaborator</span> : <span className="">collaborators</span>} 
                       </motion.div> 
                     </div>
                 </div>
               <div>
-                <div className="flex justify-center lg:mt-0 mt-2">
+                <div className="flex justify-center md:mt-0 mt-2">
                   <button
                     onClick={async () => {
                       // setShowOutputSection(true);
@@ -414,7 +415,7 @@ const EditorCollab = () => {
                         });
                       });
                     }}
-                    className="transition-all m-1 bg-green-500/90 hover:opacity-50 text-sm text-white lg:min-w-[6vw] min-w-[96vw]   py-[2px]! rounded-sm! "
+                    className="transition-all m-1 bg-green-500/90 hover:opacity-50 text-sm text-white md:min-w-[6vw] min-w-[96vw]   py-[2px]! rounded-sm! "
                   >
                     Run
                   </button>
